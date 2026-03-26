@@ -1,0 +1,56 @@
+name: Run ETL workflow
+
+on:
+  # ──────────────────────────────────────────────────────────────
+  # Manual trigger (from the "Actions" tab in GitHub)
+  # ──────────────────────────────────────────────────────────────
+  workflow_dispatch:
+
+  # ──────────────────────────────────────────────────────────────
+  # Scheduled trigger (disabled for now)
+  #
+  # Uncomment the following lines if you want your ETL
+  # to run automatically once per day at 03:00 UTC.
+  #
+  # schedule:
+  #   - cron: "0 3 * * *"
+  #
+  # Note:
+  #   - GitHub Actions uses UTC timezone for cron jobs.
+  #   - Adjust the time if needed (e.g., "0 2 * * *" = 3 AM CET).
+  # ──────────────────────────────────────────────────────────────
+
+
+jobs:
+  etl:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run ETL
+        env:
+          SHEET_ID: ${{ secrets.SHEET_ID }}
+          WORKSHEET: ${{ secrets.WORKSHEET }}
+          GOOGLE_SA_KEY_JSON: ${{ secrets.GOOGLE_SA_KEY_JSON }}
+          PG_USER: ${{ secrets.PG_USER }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_PORT: ${{ secrets.PG_PORT }}
+          PG_DB: ${{ secrets.PG_DB }}
+          PG_TABLE: ${{ secrets.PG_TABLE }}
+          PG_IF_EXISTS: ${{ secrets.PG_IF_EXISTS }}
+          PG_CHUNKSIZE: ${{ secrets.PG_CHUNKSIZE }}
+        run: |
+          echo "🚀 Launching ETL pipeline..."
+          python etl.py
+          echo "✅ ETL finished successfully!"
