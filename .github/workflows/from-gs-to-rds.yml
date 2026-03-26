@@ -52,5 +52,5 @@ jobs:
           PG_CHUNKSIZE: ${{ secrets.PG_CHUNKSIZE }}
         run: |
           echo "🚀 Launching ETL pipeline..."
-          python etl.py
+          python from_gs_to_rds.py
           echo "✅ ETL finished successfully!"
