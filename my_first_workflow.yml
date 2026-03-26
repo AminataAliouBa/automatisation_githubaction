@@ -1,0 +1,31 @@
+name : my first workflow
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  dit-bonjour:
+  runs-on: ubuntu-latest
+
+  steps:
+
+  - name: dit-bonjour
+    run: echo "Hello world"
+
+  - name: Show system info
+    run: |
+      echo "🖥️ OS Info:" && uname -a
+      echo "👤 Current user:" && whoami
+      echo "📁 Working directory:" && pwd
+  - name: Install figlet
+    run: |
+      sudo apt-get update -y
+      sudo apt-get install -y figlet
+
+  - name: Print an ASCII message
+    run: |
+      figlet "Do or do not."
+      figlet "There is no try."
+
+  - name: Wrap up
+    run: echo "✅ Workflow completed successfully!" 
