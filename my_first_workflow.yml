@@ -5,27 +5,26 @@ on:
 
 jobs:
   dit-bonjour:
-  runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
+    steps:
+    # tasks
+    - name: dit-bonjour
+      run: echo "Hello world"
 
-  steps:
+    - name: Show system info
+      run: |
+        echo "🖥️ OS Info:" && uname -a
+        echo "👤 Current user:" && whoami
+        echo "📁 Working directory:" && pwd
+    - name: Install figlet
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y figlet
 
-  - name: dit-bonjour
-    run: echo "Hello world"
+    - name: Print an ASCII message
+      run: |
+        figlet "Do or do not."
+        figlet "There is no try."
 
-  - name: Show system info
-    run: |
-      echo "🖥️ OS Info:" && uname -a
-      echo "👤 Current user:" && whoami
-      echo "📁 Working directory:" && pwd
-  - name: Install figlet
-    run: |
-      sudo apt-get update -y
-      sudo apt-get install -y figlet
-
-  - name: Print an ASCII message
-    run: |
-      figlet "Do or do not."
-      figlet "There is no try."
-
-  - name: Wrap up
-    run: echo "✅ Workflow completed successfully!" 
+    - name: Wrap up
+      run: echo "✅ Workflow completed successfully!" 
